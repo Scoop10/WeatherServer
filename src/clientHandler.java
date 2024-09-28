@@ -10,7 +10,31 @@ public class clientHandler extends Thread {
     }
 
     public String[] getLatestData(){
-        return this.latestData;
+        String filePath = "weatherData.csv";
+        try(RandomAccessFile weatherCSV = new RandomAccessFile(filePath, "r")){
+            long fileLength = weatherCSV.length() - 1;
+            StringBuilder lastLineReversed = new StringBuilder();
+
+            for(long pointer = fileLength; pointer >= 0; pointer--){
+                weatherCSV.seek(pointer);
+                char currentCharacter = (char) weatherCSV.read();
+                if(currentCharacter == '\n' && pointer != fileLength){
+                    break;
+                }
+                lastLineReversed.append(currentCharacter);
+            }
+            String lastLineString = lastLineReversed.reverse().toString();
+            String[] lastLineArray = lastLineString.split(",");
+            String[] returnArray = new String[17];
+            for(int i = 0; i < lastLineArray.length - 1; i++){
+                returnArray[i] = lastLineArray[i];
+            }
+            return returnArray;
+        } catch (IOException i){
+            i.printStackTrace();
+            String[] errorArray = {"Error occured"};
+            return errorArray;
+        }
     }
     
     public void run(){
@@ -19,6 +43,13 @@ public class clientHandler extends Thread {
             String firstLine = reader.readLine();
             if(firstLine.contains("PUT")){
                 this.latestData = PUTToArray(reader);
+            }
+            else if(firstLine.contains("GET")){
+                String[] latestWeatherData = getLatestData();
+                String jsonReponse = JSONParser.arrayToJSON(latestWeatherData);
+                OutputStream response = clientSocket.getOutputStream();
+                PrintWriter responseWriter = new PrintWriter(response, true);
+                responseWriter.println(jsonReponse);
             }
         } catch (IOException i) {
             System.out.println("Server exception: " + i.getMessage());

@@ -28,28 +28,34 @@ public class JSONParser {
         return jsonBuilder.toString();
     }
 
-    // public static HashMap<String, String> readJsonFile(String filePath) {
-    //     HashMap<String, String> dataMap = new HashMap<>();
-    //     try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-    //         StringBuilder jsonContent = new StringBuilder();
-    //         String line;
-    //         while ((line = reader.readLine()) != null) {
-    //             jsonContent.append(line);
-    //         }
-    //         String jsonString = jsonContent.toString().trim();
-    //         jsonString = jsonString.substring(1, jsonString.length() - 1); // Remove curly braces
+    public static String arrayToJSON(String[] array){
+        Integer arrayLength = array.length;
+        if(arrayLength != 17){
+            System.out.println("Array is not the correct length");
+            return "Error occurred";
+        }
+        StringBuilder jsonOutput = new StringBuilder();
+        jsonOutput.append("{").append("\n");
+        jsonOutput.append("id").append(" : ").append(array[0]).append(",").append("\n");
+        jsonOutput.append("name").append(" : ").append(array[1]).append(",").append("\n");
+        jsonOutput.append("state").append(" : ").append(array[2]).append(",").append("\n");
+        jsonOutput.append("time_zone").append(" : ").append(array[3]).append(",").append("\n");
+        jsonOutput.append("lat").append(" : ").append(array[4]).append(",").append("\n");
+        jsonOutput.append("lon").append(" : ").append(array[5]).append(",").append("\n");
+        jsonOutput.append("local_date_time").append(" : ").append(array[6]).append(",").append("\n");
+        jsonOutput.append("local_date_time_full").append(" : ").append(array[7]).append(",").append("\n");
+        jsonOutput.append("air_temp").append(" : ").append(array[8]).append(",").append("\n");
+        jsonOutput.append("apparent_t").append(" : ").append(array[9]).append(",").append("\n");
+        jsonOutput.append("cloud").append(" : ").append(array[10]).append(",").append("\n");
+        jsonOutput.append("dewpt").append(" : ").append(array[11]).append(",").append("\n");
+        jsonOutput.append("press").append(" : ").append(array[12]).append(",").append("\n");
+        jsonOutput.append("rel_hum").append(" : ").append(array[13]).append(",").append("\n");
+        jsonOutput.append("wind_dir").append(" : ").append(array[14]).append(",").append("\n");
+        jsonOutput.append("wind_spd_kmh").append(" : ").append(array[15]).append(",").append("\n");
+        jsonOutput.append("wind_spd_kt").append(" : ").append(array[16]).append("\n");
+        jsonOutput.append("}");
+        String jsonString = jsonOutput.toString();
+        return jsonString;
+    }
 
-    //         String[] keyValuePairs = jsonString.split(",");
-
-    //         for (String pair : keyValuePairs) {
-    //             String[] entry = pair.split(":");
-    //             String key = entry[0].trim().replaceAll("\"", "");
-    //             String value = entry[1].trim().replaceAll("\"", "");
-    //             dataMap.put(key, value);
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return dataMap;
-    // }
 }
