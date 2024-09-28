@@ -13,7 +13,6 @@ public class AggregationServer extends Thread{
         }
         catch(IOException e){
             e.printStackTrace();
-
         }
     }
 
@@ -24,7 +23,7 @@ public class AggregationServer extends Thread{
         try(ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Started the Aggregation Server on port ");
             System.out.println(port);
-            System.out.println("\n"); 
+            System.out.println("\n");
 
             System.out.println("Waiting for Weather Server to connect. ");
 
