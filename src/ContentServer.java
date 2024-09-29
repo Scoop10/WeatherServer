@@ -9,7 +9,12 @@ import java.util.*;
 // Content-Length: (And this one too)
 
 
-public class ContentServer {
+public class ContentServer { 
+    private static Socket thisSocket;
+    private static InputStream serverResponse;
+    private static OutputStream output;
+    private static BufferedReader reader;
+
     public static void main(String[] args) {
         System.out.println("Input the Server URL: ");
 
@@ -19,26 +24,44 @@ public class ContentServer {
         String hostname = splitURL[0];
         int port = Integer.parseInt(splitURL[1]);
 
-        String filePath = input.next();
-        input.close();
+        runServer(hostname, port, input);
+    }
+        
+        
 
-        String JSONWeatherData = JSONParser.convertTextToJson(filePath);
-        String PUTRequest = "";
+    public static void runServer(String hostname, int port, Scanner input){
+        try (Socket socket = new Socket(hostname, port)){
+            thisSocket = socket;
+            try {
+                serverResponse = thisSocket.getInputStream(); 
+                reader = new BufferedReader(new InputStreamReader(serverResponse));
+            } catch (IOException i){
+                i.printStackTrace();
+            }
+            while(true){
+                System.out.println(thisSocket.isClosed());
+                System.out.println("Input the text file with stored weather data: ");
+                String filePath = input.next();
 
-        PUTRequest = PUTRequest.concat("PUT /weather.json HTTP/1.1\n");
-        PUTRequest = PUTRequest.concat("User-Agent: ATOMClient/1/0\n");
-        PUTRequest = PUTRequest.concat("Content-Type: application/json\n");
-        PUTRequest = PUTRequest.concat("Content-Length: " + JSONWeatherData.length() + "\n");
-        PUTRequest = PUTRequest.concat("\n");
-        PUTRequest = PUTRequest.concat(JSONWeatherData);
-        PUTRequest = PUTRequest.concat("\n");
+                String JSONWeatherData = JSONParser.convertTextToJson(filePath);
+                String PUTRequest = "";
 
-        try (Socket socket = new Socket(hostname, port)) {
-            OutputStream output = socket.getOutputStream();
-            PrintWriter writer = new PrintWriter(output, true);
-            writer.println(PUTRequest);
-            writer.flush();
-            System.out.println("Message sent to the server");
+                PUTRequest = PUTRequest.concat("PUT /weather.json HTTP/1.1\n");
+                PUTRequest = PUTRequest.concat("User-Agent: ATOMClient/1/0\n");
+                PUTRequest = PUTRequest.concat("Content-Type: application/json\n");
+                PUTRequest = PUTRequest.concat("Content-Length: " + JSONWeatherData.length() + "\n");
+                PUTRequest = PUTRequest.concat("\n");
+                PUTRequest = PUTRequest.concat(JSONWeatherData);
+                PUTRequest = PUTRequest.concat("\n");
+
+
+                output = socket.getOutputStream();
+                PrintWriter writer = new PrintWriter(output, true);
+                writer.println(PUTRequest);
+                writer.flush();
+                System.out.println("Message sent to the server");
+                System.out.println(thisSocket.isClosed());
+            }
         } catch (UnknownHostException e) {
             System.out.println("Server not found: " + e.getMessage());
         } catch (IOException e) {

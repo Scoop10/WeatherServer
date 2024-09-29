@@ -1,0 +1,17 @@
+id:IDS609012
+name:Imaginary Place
+state: SA
+time_zone:CST
+lat:-30.1
+lon:137.8
+local_date_time:11/04:20pm
+local_date_time_full:63516465313
+air_temp:133.510
+apparent_t:82.0
+cloud:Pretty much black
+dewpt:1.2
+press:2000000
+rel_hum:6451
+wind_dir:Everywhere
+wind_spd_kmh:822
+wind_spd_kt:83521
