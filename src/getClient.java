@@ -9,23 +9,32 @@ import java.util.Scanner;
 
 public class getClient extends Thread {
 
+    private static boolean test;
+    private static String hostname;
+    private static int port;
 
-
-    public getClient(){
-    
+    public getClient(boolean test){
+        getClient.test = test;
     }
 
     @Override
     public void run(){
-        System.out.println("Input the Server URL in the format 'servername:portnumber' : ");
+        if(!test){
+            System.out.println("Input the Server URL in the format 'servername:portnumber' : ");
 
-        Scanner input = new Scanner(System.in);
-        String URL = input.next();
-        String[] splitURL = URL.split(":");
-        String hostname = splitURL[0];
-        int port = Integer.parseInt(splitURL[1]);
-
-        input.close();
+            Scanner input = new Scanner(System.in);
+            String URL = input.next();
+            String[] splitURL = URL.split(":");
+            hostname = splitURL[0];
+            port = Integer.parseInt(splitURL[1]);
+    
+            input.close();
+        }   
+        else{
+            hostname = "localhost";
+            port = 4567;
+        }
+       
 
         String GETRequest = "";
 
