@@ -52,7 +52,7 @@ public class autoTest {
             System.out.println("Exception " + e + "Occurred!! Shutting down GETClient!");
         }
 
-        // System.out.println("First stage of testing succeeded! Beginning concurrency tests!");
+        System.out.println("First stage of testing succeeded! Beginning concurrency tests!");
 
         // ContentServer newContentServer1 = new ContentServer(true);
         // ContentServer newContentServer2 = new ContentServer(true);
